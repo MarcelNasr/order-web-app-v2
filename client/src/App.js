@@ -1,5 +1,5 @@
 import LoginPage from "./pages/login";
-import SignUp from "./pages/signup";
+import SignUpPage from "./pages/signup";
 import Orders from "./pages/orders"
 import { BrowserRouter } from 'react-router-dom';
 import { Routes , Route} from 'react-router-dom';
@@ -9,7 +9,7 @@ function App() {
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<LoginPage/>}/>    
-      <Route path="signup" element={<SignUp/>}/> 
+      <Route path="signup" element={<SignUpPage/>}/> 
       <Route path="orders" element={<Orders/>}/> 
       <Route path ="*" element ={<div>No Page found</div>}/>
     </Routes>
