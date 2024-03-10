@@ -38,7 +38,7 @@ export default function OrdersForm() {
               <TableCell align="center">{OrdersData.order_name}</TableCell>
               <TableCell align="center">{OrdersData.order_id}</TableCell>
               <TableCell align="center">{OrdersData.description}</TableCell>
-              <TableCell align="center">{OrdersData.payment?"Payed":"Not Payed"}</TableCell>
+              <TableCell align="center">{OrdersData.payment?"Paid":"Not Paid"}</TableCell>
               <TableCell align="center">
                 <Button  variant="contained" color="primary" onClick={() => console.log("Edit button clicked for ID:", OrdersData.id)}>
                   Edit
