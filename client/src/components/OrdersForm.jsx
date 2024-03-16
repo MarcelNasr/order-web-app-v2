@@ -8,10 +8,20 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import OrdersData from '../components/orderDummydata.json'
+import { useNavigate } from 'react-router-dom';
 
 
 
 export default function OrdersForm() {
+  const navigate = useNavigate()
+
+  const handleDelete = (orderId) => {
+    const isConfirmed = window.confirm(`Are you sure you want to delete order ${orderId}?`);
+    if (isConfirmed) {
+      console.log(`Order ${orderId} deleted`);
+      // Perform delete action here with orderId
+    }
+  };
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -40,12 +50,12 @@ export default function OrdersForm() {
               <TableCell align="center">{OrdersData.description}</TableCell>
               <TableCell align="center">{OrdersData.payment?"Paid":"Not Paid"}</TableCell>
               <TableCell align="center">
-                <Button  variant="contained" color="primary" onClick={() => console.log("Edit button clicked for ID:", OrdersData.id)}>
+                <Button  variant="contained" color="primary" onClick={() => navigate('/editorder')}>
                   Edit
                 </Button>
                 </TableCell>
               <TableCell align="center">
-                <Button variant="contained" color="primary"  onClick={() => console.log("Delete button clicked for ID:", OrdersData.id)}>
+                <Button variant="contained" color="primary"  onClick={() => handleDelete(OrdersData.id)}>
                   Delete
                 </Button>
                 </TableCell>
