@@ -14,6 +14,7 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import { useParams } from 'react-router-dom';
 
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -21,6 +22,7 @@ import FormLabel from '@mui/material/FormLabel';
 const defaultTheme = createTheme();
 
 export default function EditCurrentOrder() {
+  const {id}=useParams("")
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -29,7 +31,7 @@ export default function EditCurrentOrder() {
       password: data.get('password'),
     });
   };
-
+ console.log(id)
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">

@@ -50,7 +50,7 @@ export default function OrdersForm() {
               <TableCell align="center">{OrdersData.description}</TableCell>
               <TableCell align="center">{OrdersData.payment?"Paid":"Not Paid"}</TableCell>
               <TableCell align="center">
-                <Button  variant="contained" color="primary" onClick={() => navigate('/editorder')}>
+                <Button  variant="contained" color="primary" onClick={() => navigate(`/editorder/${OrdersData.id}`)}>
                   Edit
                 </Button>
                 </TableCell>

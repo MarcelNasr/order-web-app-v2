@@ -13,7 +13,7 @@ function App() {
       <Route path="/" element={<LoginPage/>}/>    
       <Route path="signup" element={<SignUpPage/>}/> 
       <Route path="orders" element={<Orders/>}/>
-      <Route path="editorder" element={<EditOrderPage/>}/> 
+      <Route path="editorder/:id" element={<EditOrderPage/>}/> 
       <Route path="neworder" element={<NewOrderPage/>}/> 
       <Route path ="*" element ={<div>No Page found</div>}/>
     </Routes>
