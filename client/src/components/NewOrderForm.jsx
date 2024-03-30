@@ -14,6 +14,8 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import { useNavigate } from 'react-router-dom';
+import api from '../axios/api';
 
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -21,13 +23,23 @@ import FormLabel from '@mui/material/FormLabel';
 const defaultTheme = createTheme();
 
 export default function NewOrderForm() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate()
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const order = {
+      orderName: data.get("orderName"),
+      orderId: data.get("orderId"),
+      description: data.get("description"),
+      payment: data.get("payment")==="Payed"?1:0
+    };
+    try {
+      const result = await api.post("/order/addorder",order);
+      console.log(result)
+      navigate('/orders')
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -67,7 +79,7 @@ export default function NewOrderForm() {
                   fullWidth
                   id="order-name"
                   label="Order_Name"
-                  name="order_name"
+                  name="orderName"
                   autoComplete="order-name"
                   autoFocus
                 />
@@ -78,7 +90,7 @@ export default function NewOrderForm() {
                   fullWidth
                   id="order-id"
                   label="Order_ID"
-                  name="order_id"
+                  name="orderId"
                   autoComplete="order-id"
                 />
               </Grid>
@@ -100,10 +112,10 @@ export default function NewOrderForm() {
             <RadioGroup
                 aria-labelledby="demo-radio-buttons-group-label"
                 defaultValue="female"
-                name="radio-buttons-group"
+                name="payment"
             >
-                <FormControlLabel value="female" control={<Radio />} label="Payed" />
-                <FormControlLabel value="male" control={<Radio />} label="Not Payed" />
+                <FormControlLabel value="Payed" control={<Radio />} label="Payed" />
+                <FormControlLabel value="Not Payed" control={<Radio />} label="Not Payed" />
             </RadioGroup>
     </FormControl>
               </Grid>
