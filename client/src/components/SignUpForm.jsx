@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -15,42 +16,83 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom'
 import api from '../axios/api';
 
-// function Copyright(props) {
-//   return (
-//     <Typography variant="body2" color="text.secondary" align="center" {...props}>
-//       {'Copyright © '}
-//       <Link color="inherit" href="https://mui.com/">
-//         Your Website
-//       </Link>{' '}
-//       {new Date().getFullYear()}
-//       {'.'}
-//     </Typography>
-//   );
-// }
-
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function SignUpForm() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [formData, setFormData] = React.useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+  const [errors, setErrors] = React.useState({});
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+    validateField(name, value);
+  };
+
+  const validateField = (name, value) => {
+    let error = '';
+    switch (name) {
+      case 'firstName':
+      case 'lastName':
+        if (!value.trim()) {
+          error = 'Field is required';
+        } else if (!/^[a-zA-Z]*$/.test(value)) {
+          error = 'Must contain only letters';
+        }
+        break;
+      case 'email':
+        if (!value.trim()) {
+          error = 'Field is required';
+        } else if (!/\S+@\S+\.\S+/.test(value)) {
+          error = 'Invalid email format.  email@gmail.com';
+        }
+        break;
+        case 'password':
+          case 'confirmPassword':
+            if (!value.trim()) {
+              error = 'Field is required';
+            } else if (value.length < 8) {
+              error = 'Password must be at least 8 characters long';
+            } else if (value.length > 20) {
+              error = 'Password must be at most 20 characters long';
+            } else if (name === 'confirmPassword' && value !== formData.password) {
+              error = 'Passwords do not match';
+            }
+            break;
+        
+      default:
+        break;
+    }
+    setErrors({ ...errors, [name]: error });
+  };
+
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const user = {
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
-      email: data.get("email"),
-      password: data.get("password")
-    };
+    // Validate all fields before submitting the form
+    const valid = Object.values(formData).every((value) => value.trim());
+    if (!valid) {
+      alert('Please fill in all fields');
+      return;
+    }
     try {
-      const result = await api.post("/user/adduser",user);
-      console.log(result)
-      navigate('/')
+      const response = await api.post(`/user/getuser`,formData.email)
+      
+      const result = await api.post("/user/adduser", formData);
+      // console.log(result);
+      // navigate('/');
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
+  
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -81,6 +123,10 @@ export default function SignUpForm() {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  error={!!errors.firstName}
+                  helperText={errors.firstName}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -91,6 +137,10 @@ export default function SignUpForm() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  error={!!errors.lastName}
+                  helperText={errors.lastName}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -101,6 +151,10 @@ export default function SignUpForm() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  error={!!errors.email}
+                  helperText={errors.email}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -112,17 +166,25 @@ export default function SignUpForm() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  error={!!errors.password}
+                  helperText={errors.password}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="confirmpassword"
-                  label="ConfirmPassword"
+                  name="confirmPassword"
+                  label="Confirm Password"
                   type="password"
-                  id="confirmpassword"
+                  id="confirmPassword"
                   autoComplete="new-password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  error={!!errors.confirmPassword}
+                  helperText={errors.confirmPassword}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -142,14 +204,13 @@ export default function SignUpForm() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="" onClick={()=>navigate('/')} variant="body2" >
+                <Link href="" onClick={() => navigate('/')} variant="body2" >
                   Already have an account? Sign in
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        {/* <Copyright sx={{ mt: 5 }} /> */}
       </Container>
     </ThemeProvider>
   );

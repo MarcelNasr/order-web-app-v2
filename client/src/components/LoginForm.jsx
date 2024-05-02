@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import api from '../axios/api';
 
 
 function Copyright(props) {
@@ -34,21 +35,35 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function LogInForm() {
+  const navigate = useNavigate()
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate()
-
-  const handleSubmit = (event) => {
+ 
+  
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (email === 'admin@gmail.com' && password === 'admin') {
-      // Navigate to orders page
+
+    console.log(email)
+    console.log(password)
+    let response;
+    try {
+      response = await api.post(`/user/checkuser`,{email ,password});
+      console.log(response);
       navigate('orders')
-    } else {
-      // Display error message or perform other actions for invalid credentials
-      alert('Invalid email or password');
+    } catch (error) {
+        console.log(error);
     }
-  };
+}
+
+    // if (email === 'admin@gmail.com' && password === 'admin') {
+    //   // Navigate to orders page
+    //   navigate('orders')
+    // } else {
+    //   // Display error message or perform other actions for invalid credentials
+    //   alert('Invalid email or password');
+    // }
+
 
   
 
@@ -83,6 +98,7 @@ export default function LogInForm() {
               autoFocus
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              
             />
             <TextField
               margin="normal"

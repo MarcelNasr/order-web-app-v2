@@ -62,7 +62,7 @@ export default function NewOrderForm() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={3}>
+              {/* <Grid item xs={12} sm={3}>
                 <TextField
                   autoComplete="given-name"
                   name="id"
@@ -72,8 +72,8 @@ export default function NewOrderForm() {
                   label="ID"
                   disabled
                 />
-              </Grid>
-              <Grid item xs={12} sm={5}>
+              </Grid> */}
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
@@ -84,7 +84,7 @@ export default function NewOrderForm() {
                   autoFocus
                 />
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={12} sm={6} >
                 <TextField
                   required
                   fullWidth
